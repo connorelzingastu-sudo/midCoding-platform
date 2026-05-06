@@ -9,9 +9,36 @@ velocity_y = 0
 gravity = 1
 on_ground = False
 
+platforms = [
+    Rect((0,   470),(800, 30)),
+    Rect((200, 380),(150, 20)),
+    Rect((450, 300),(150, 20)),
+    Rect((650, 220),(100, 20))
+]
+
+#diamonds = [
+#    Rect ((250 , 340))
+#]
+def draw_platforms():
+    for platform in platforms:
+        screen.draw.filled_rect(platform, "Brown")
+
+def draw_player():
+    screen.draw.filled_rect(player, "Lime Green")
+
 def draw():
     screen.clear()
-    screen.draw.filled_rect(player, "Lime Green")
+    draw_platforms()
+    draw_player()
+
+def collision_check():
+    global velocity_y, on_ground
+
+    for platform in platforms:
+        if player.colliderect(platform) and velocity_y > 0:
+            player.bottom = platform.top
+            velocity_y = 0
+            on_ground = True
 
 def update():
     global velocity_y, on_ground
@@ -39,5 +66,7 @@ def update():
 
     if player.right > WIDTH:
         player.right = WIDTH
+
+    collision_check()
 
 pgzrun.go()
