@@ -11,7 +11,7 @@ on_ground = False
 
 def draw():
     screen.clear()
-    screen.draw.filled_rect(player, "blue")
+    screen.draw.filled_rect(player, "Lime Green")
 
 def update():
     global velocity_y, on_ground
