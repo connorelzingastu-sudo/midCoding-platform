@@ -4,10 +4,11 @@ import pgzrun
 TITLE = "Platform Game"
 WIDTH = 800
 HEIGHT = 500
+
+# Player Variables
 player = Rect((100, 400), (40, 40))
 velocity_y = 0
 gravity = 1
-score = 0
 on_ground = False
 
 platforms = [
@@ -21,6 +22,7 @@ hidden_platforms = [
     Rect((100,   260),(30, 30)),
 ]
 
+# Collectibles
 diamonds = [
     Rect((250, 340), (20, 20)),
     Rect((500, 260), (20, 20)), 
@@ -28,11 +30,12 @@ diamonds = [
     Rect((720, 180), (20, 20))
 ]
 
-# Hidden special
 special_diamonds = [
     Rect ((40, 120),  (20, 20)), 
 ]
+score = 0
 
+# Collisions
 def diamond_collision():
     global score
     for diamond in diamonds[ : ]:
@@ -60,7 +63,11 @@ def platform_collision():
             velocity_y = 0
             on_ground = True
 
+def collision_check():
+    diamond_collision()
+    platform_collision()
 
+# Drawing
 def draw_platforms():
     for platform in platforms:
         screen.draw.filled_rect(platform, "Brown")
@@ -81,11 +88,8 @@ def draw():
     draw_diamonds()
     draw_player()
     screen.draw.text(f"Score: {score}", (10, 10), fontsize=30, color="white")
-def collision_check():
-    diamond_collision()
-    platform_collision()
-    
-
+  
+# Update state
 def update():
     global velocity_y, on_ground
 
