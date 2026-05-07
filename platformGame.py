@@ -7,6 +7,7 @@ HEIGHT = 500
 player = Rect((100, 400), (40, 40))
 velocity_y = 0
 gravity = 1
+score = 0
 on_ground = False
 
 platforms = [
@@ -16,22 +17,20 @@ platforms = [
     Rect((650, 220),(100, 20))
 ]
 
-#diamonds = [
-#    Rect ((250 , 340))
-#]
-def draw_platforms():
-    for platform in platforms:
-        screen.draw.filled_rect(platform, "Brown")
+diamonds = [
+    Rect ((250, 340), (20, 20)),
+    Rect ((500, 260), (20, 20)), 
+    Rect ((690, 180), (20, 20))
+]
 
-def draw_player():
-    screen.draw.filled_rect(player, "Lime Green")
+def diamond_collision():
+    global score
+    for diamond in diamonds[ : ]:
+        if player.colliderect(diamond):
+            diamonds.remove(diamond)
+            score += 1
 
-def draw():
-    screen.clear()
-    draw_platforms()
-    draw_player()
-
-def collision_check():
+def platform_collision():
     global velocity_y, on_ground
 
     for platform in platforms:
@@ -39,6 +38,29 @@ def collision_check():
             player.bottom = platform.top
             velocity_y = 0
             on_ground = True
+
+
+def draw_platforms():
+    for platform in platforms:
+        screen.draw.filled_rect(platform, "Brown")
+
+def draw_player():
+    screen.draw.filled_rect(player, "Lime Green")
+
+def draw_diamonds():
+    for diamond in diamonds:
+        screen.draw.filled_rect(diamond, "Light Blue")
+
+def draw():
+    screen.clear()
+    draw_platforms()
+    draw_diamonds()
+    draw_player()
+
+def collision_check():
+    diamond_collision()
+    platform_collision()
+    
 
 def update():
     global velocity_y, on_ground
