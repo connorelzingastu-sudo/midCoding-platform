@@ -10,6 +10,7 @@ player = Rect((100, 400), (40, 40))
 velocity_y = 0
 gravity = 1
 on_ground = False
+power_jump = False
 
 platforms = [
     Rect((0,   470),(800, 30)),
@@ -88,10 +89,12 @@ def draw():
     draw_diamonds()
     draw_player()
     screen.draw.text(f"Score: {score}", (10, 10), fontsize=30, color="white")
+    if power_jump:
+        screen.draw.text(f"Super Bounce Activated", (10, 50), fontsize=30, color="white")
   
 # Update state
 def update():
-    global velocity_y, on_ground
+    global velocity_y, on_ground, power_jump
 
     velocity_y += gravity
     player.y += velocity_y
@@ -102,7 +105,7 @@ def update():
         on_ground = True
 
     if keyboard.space and on_ground:
-        velocity_y = -15
+        velocity_y = -30 if power_jump else -15
         on_ground = False
     
     if keyboard.left:
@@ -118,5 +121,8 @@ def update():
         player.right = WIDTH
 
     collision_check()
+
+    if score > 1000:
+        power_jump = True
 
 pgzrun.go()
