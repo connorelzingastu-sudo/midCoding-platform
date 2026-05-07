@@ -40,6 +40,7 @@ def collectibles():
     return diamonds, special_diamonds
 diamonds, special_diamonds = collectibles()
 score = 0
+attemptNum = 0
 
 # Goals and Hazards
 door = Rect((740,0),(40,60))
@@ -55,6 +56,12 @@ def lava_collision():
         if player.colliderect(lava_block):
             reset_game()
 
+def attempts():
+    global attemptNum
+    attemptNum +=1
+
+
+    
 def door_collision():
     global win
     if player.colliderect(door):
@@ -122,10 +129,11 @@ def draw():
         screen.draw.filled_rect(door, "White")
         draw_diamonds()
         draw_player()
+        screen.draw.text(f"Attempts: {attemptNum}", (10, 35), fontsize=30, color="white")
         screen.draw.text(f"Score: {score}", (10, 10), fontsize=30, color="white")
         if power_jump:
             screen.draw.text(f"Super Bounce Activated", (10, 50), fontsize=30, color="white")
-    
+        
 # Update state
 def update():
     global velocity_y, on_ground, power_jump
@@ -160,6 +168,7 @@ def update():
         power_jump = True
 
 def reset_game():
+
     global diamonds, special_diamonds, score
     global win, velocity_y, on_ground, power_jump
     player.x = 20
@@ -169,6 +178,7 @@ def reset_game():
     on_ground = False
     power_jump = False
     score = 0
+    attempts()
     diamonds, special_diamonds = collectibles()
 
 pgzrun.go()
