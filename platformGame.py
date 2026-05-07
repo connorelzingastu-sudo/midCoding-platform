@@ -1,7 +1,7 @@
 import pgzrun
 
 # Variables
-TITLE = "Platform Game"
+TITLE = "Diamond Hunt Quest"
 WIDTH = 800
 HEIGHT = 500
 win = False
