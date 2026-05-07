@@ -130,7 +130,7 @@ def draw():
         screen.draw.text(f"Attempts: {attemptNum}", (10, 35), fontsize=30, color="white")
         screen.draw.text(f"Score: {score}", (10, 10), fontsize=30, color="white")
         if power_jump:
-            screen.draw.text(f"Super Bounce Activated", (10, 50), fontsize=30, color="white")
+            screen.draw.text(f"Super Bounce Activated", (10, 60), fontsize=30, color="white")
         
 # Update state
 def update():
