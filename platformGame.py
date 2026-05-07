@@ -7,7 +7,7 @@ HEIGHT = 500
 win = False
 
 # Player Variables
-player = Rect((100, 400), (40, 40))
+player = Rect((20, 400), (40, 40))
 velocity_y = 0
 gravity = 1
 on_ground = False
@@ -24,23 +24,37 @@ hidden_platforms = [
     Rect((100,   260),(30, 30)),
 ]
 
-# Collectibles
-diamonds = [
-    Rect((250, 340), (20, 20)),
-    Rect((500, 260), (20, 20)), 
-    Rect((660, 180), (20, 20)), 
-    Rect((720, 180), (20, 20))
-]
+def collectibles():
+    # Collectibles
+    diamonds = [
+        Rect((250, 340), (20, 20)),
+        Rect((500, 260), (20, 20)), 
+        Rect((660, 180), (20, 20)), 
+        Rect((720, 180), (20, 20))
+    ]
 
-special_diamonds = [
-    Rect ((40, 120),  (20, 20)), 
-]
+    special_diamonds = [
+        Rect ((40, 120),  (20, 20)), 
+    ]
+
+    return diamonds, special_diamonds
+diamonds, special_diamonds = collectibles()
 score = 0
 
 # Goals and Hazards
 door = Rect((740,0),(40,60))
 
+lava_blocks = [
+    Rect((95, 430), (40, 40)),
+    Rect((500, 430), (40, 40)), 
+]
+
 # Collisions
+def lava_collision():
+    for lava_block in lava_blocks:
+        if player.colliderect(lava_block):
+            reset_game()
+
 def door_collision():
     global win
     if player.colliderect(door):
@@ -74,6 +88,7 @@ def platform_collision():
             on_ground = True
 
 def collision_check():
+    lava_collision()
     diamond_collision()
     platform_collision()
     door_collision()
@@ -82,6 +97,10 @@ def collision_check():
 def draw_platforms():
     for platform in platforms:
         screen.draw.filled_rect(platform, "Brown")
+
+def draw_lava_blocks():
+    for lava_block in lava_blocks:
+        screen.draw.filled_rect(lava_block, "Red")
 
 def draw_player():
     screen.draw.filled_rect(player, "Lime Green")
@@ -99,6 +118,7 @@ def draw():
         screen.draw.text("Congratulations You Won!!!!", (160, 300), fontsize=50, color="Green")
     else:
         draw_platforms()
+        draw_lava_blocks()
         screen.draw.filled_rect(door, "White")
         draw_diamonds()
         draw_player()
@@ -138,5 +158,17 @@ def update():
 
     if score > 1000:
         power_jump = True
+
+def reset_game():
+    global diamonds, special_diamonds, score
+    global win, velocity_y, on_ground, power_jump
+    player.x = 20
+    player.y = 400
+    win = False
+    velocity_y = 0
+    on_ground = False
+    power_jump = False
+    score = 0
+    diamonds, special_diamonds = collectibles()
 
 pgzrun.go()
