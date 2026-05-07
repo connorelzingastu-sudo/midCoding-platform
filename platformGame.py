@@ -56,7 +56,7 @@ def draw():
     draw_platforms()
     draw_diamonds()
     draw_player()
-
+    screen.draw.text(f"Score: {score}", (10, 10), fontsize=30, color="white")
 def collision_check():
     diamond_collision()
     platform_collision()
