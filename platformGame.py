@@ -4,6 +4,7 @@ import pgzrun
 TITLE = "Platform Game"
 WIDTH = 800
 HEIGHT = 500
+win = False
 
 # Player Variables
 player = Rect((100, 400), (40, 40))
@@ -36,7 +37,15 @@ special_diamonds = [
 ]
 score = 0
 
+# Goals and Hazards
+door = Rect((740,0),(40,60))
+
 # Collisions
+def door_collision():
+    global win
+    if player.colliderect(door):
+        win = True
+
 def diamond_collision():
     global score
     for diamond in diamonds[ : ]:
@@ -67,6 +76,7 @@ def platform_collision():
 def collision_check():
     diamond_collision()
     platform_collision()
+    door_collision()
 
 # Drawing
 def draw_platforms():
@@ -85,13 +95,17 @@ def draw_diamonds():
 
 def draw():
     screen.clear()
-    draw_platforms()
-    draw_diamonds()
-    draw_player()
-    screen.draw.text(f"Score: {score}", (10, 10), fontsize=30, color="white")
-    if power_jump:
-        screen.draw.text(f"Super Bounce Activated", (10, 50), fontsize=30, color="white")
-  
+    if win:
+        screen.draw.text("Congratulations You Won!!!!", (160, 300), fontsize=50, color="Green")
+    else:
+        draw_platforms()
+        screen.draw.filled_rect(door, "White")
+        draw_diamonds()
+        draw_player()
+        screen.draw.text(f"Score: {score}", (10, 10), fontsize=30, color="white")
+        if power_jump:
+            screen.draw.text(f"Super Bounce Activated", (10, 50), fontsize=30, color="white")
+    
 # Update state
 def update():
     global velocity_y, on_ground, power_jump
