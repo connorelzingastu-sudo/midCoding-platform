@@ -17,10 +17,20 @@ platforms = [
     Rect((650, 220),(100, 20))
 ]
 
+hidden_platforms = [
+    Rect((100,   260),(30, 30)),
+]
+
 diamonds = [
-    Rect ((250, 340), (20, 20)),
-    Rect ((500, 260), (20, 20)), 
-    Rect ((690, 180), (20, 20))
+    Rect((250, 340), (20, 20)),
+    Rect((500, 260), (20, 20)), 
+    Rect((660, 180), (20, 20)), 
+    Rect((720, 180), (20, 20))
+]
+
+# Hidden special
+special_diamonds = [
+    Rect ((40, 120),  (20, 20)), 
 ]
 
 def diamond_collision():
@@ -30,10 +40,21 @@ def diamond_collision():
             diamonds.remove(diamond)
             score += 1
 
+    for diamond in special_diamonds[ : ]:
+        if player.colliderect(diamond):
+            special_diamonds.remove(diamond)
+            score += 1000
+
 def platform_collision():
     global velocity_y, on_ground
 
     for platform in platforms:
+        if player.colliderect(platform) and velocity_y > 0:
+            player.bottom = platform.top
+            velocity_y = 0
+            on_ground = True
+
+    for platform in hidden_platforms:
         if player.colliderect(platform) and velocity_y > 0:
             player.bottom = platform.top
             velocity_y = 0
@@ -50,6 +71,9 @@ def draw_player():
 def draw_diamonds():
     for diamond in diamonds:
         screen.draw.filled_rect(diamond, "Light Blue")
+
+    for diamond in special_diamonds:
+        screen.draw.filled_rect(diamond, "Blue")
 
 def draw():
     screen.clear()
