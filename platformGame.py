@@ -55,13 +55,11 @@ def lava_collision():
     for lava_block in lava_blocks:
         if player.colliderect(lava_block):
             reset_game()
-
+            
 def attempts():
     global attemptNum
     attemptNum +=1
 
-
-    
 def door_collision():
     global win
     if player.colliderect(door):
